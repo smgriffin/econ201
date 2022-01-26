@@ -1,0 +1,127 @@
+---
+title: 'Pandemic Leading to an Unusual Choice: Coffee or a Trip?'
+subtitle: 'Source: https://www.marketwatch.com/story/there-are-4-flights-in-china-but-dont-expect-many-other-coronavirus-airfare-deals-2020-02-29'
+author: "sg"
+date: "1/26/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(econocharts)
+library(ggplot2)
+
+```
+
+
+## Opening Assumptions
+
+While the Chinese economy did have some advance notice of the severity of the COVID-19 pandemic due to being the place of discovery.  Prior to that the assumption can be made that the domestic air market was resting at equilibrium.
+
+```{r, results = 'hide'}
+sdcurve(xlab = 'Quantity of Flights',
+        ylab = 'Price of Price of Flights',
+        main = 'SD Curve of Air Market',
+        sub = 'Prior to March 2020',
+        equilibrium = TRUE)
+```
+
+## What happened?
+
+In the early days of the COVID-19 outbreak thousands of flights were canceled across China.  After eventually resuming operations, they did so with one major difference.  The price of a flight within China could cost as little as $4.
+
+## How Did the Outbreak Effect the Demand for Air Travel?
+
+The demand of domestic air travel in China was greatly effected by the COVID-19 outbreak.   A large impact could be felt by a change in consumer preferences, where increased concern about health effects caused most people to shelter at home.  Just two weeks following this article the global economy would come to halt, however in the early stages of the outbreak the industries most gravely effected were the travel and hospitality industries.  Leaving the income of the overall economy at a relatively stable place.  While the article speculates consumers could perhaps see even lower prices for domestic airlines, it is difficult to imagine a shift in overall expectations to cause a shift in demand based only on the hearsay of the article.  Overall, a shift to the left is expected in the demand curve as a result of the original outbreak.  Additionally, the very low prices would increase the quantity demanded. 
+
+```{r, results = 'hide'}
+demand(ncurves = 2,
+       #x = c(6,4),
+       curve_names = FALSE,
+       type = 'convex',
+       main = 'Demand Curve of Air Travel',
+       sub = 'Shift from COVID-19 Outbreak',
+       xlab = 'Quantity of Flights',
+       ylab = 'Price of Flights'
+       )
+
+```
+
+## How Was the Supply Effected?
+
+It is no secret that the COVID-19 outbreak caused a giant supply shock shifting the supply curve to the left.  In fact, it is still a major headline in nearly all industries to this day.  As a countermeasure to the movement of the supply curve, the article states that the domestic airlines can receive government subsidies.  This action would have helped shift the supply curve towards the right.  However, the quantity supplied would still decrease as some airlines would not be able to sustain operations at such low prices. 
+
+```{r, results = 'hide'}
+supply(ncurves = 2,
+       type = 'convex',
+       #x = 4,
+       #geomcol = "NA",
+       main = 'Supply Curve of Air Travel',
+       sub = 'Shift from Outbreak',
+       xlab = 'Quantity of Flights',
+       ylab = 'Price of Flights',
+       names = c("S[0]", 'S[1]')
+       )
+```
+
+```{r, results = 'hide'}
+supply(ncurves = 2,
+       type = 'convex',
+       #x = 4,
+       #geomcol = "NA",
+       main = 'Supply Curve of Air Travel',
+       sub = 'Shift from Subsidy',
+       xlab = 'Quantity of Flights',
+       ylab = 'Price of Flights',
+       names = c("S[1]", 'S[2]')
+       )
+```
+
+```{r, results = 'hide'}
+supply(ncurves = 3,
+       #x = 4,
+       #geomcol = '',
+       type = 'convex',
+       main = 'Supply Curve of Air Travel',
+       sub = 'Total Shift from COVID-19',
+       xlab = 'Quantity of Flights',
+       ylab = 'Price of Flightss',
+       names = c("S[1]", 'S[2]', "S[0]")
+       )
+```
+
+
+
+## Where does it land?
+
+Combining the shift in demand resulting from a change in consumer preferences.  With the two shifts in supply due to the COVID-19 outbreak (natural events) and the government subsidy.  It is then possible to view the new equilibrium price marked on the graph as B.
+
+```{r, results = 'hide'}
+supply1 <- data.frame(x = c(5:10), y = c(3, 4, 5, 8, 11, 16))
+supply2 <- data.frame(x = c(1:6), y = c(3, 4, 5, 8, 11, 16))
+supply3 <- data.frame(x = c(3:8), y = c(3, 4, 5, 8, 11, 16))
+demand <- data.frame(x = c(5:10), y = c(16, 11, 8, 5, 4, 3))
+demand2 <- data.frame(x = c(2:7), y = c(16, 11, 8, 5, 4, 3))
+
+
+sdcurve(supply1, supply2, supply3, demand, demand2,
+        main = 'Combined Supply and Demand',
+        sub = 'of Chinese Domestic Air Travel',
+        curve_names = FALSE,
+        equilibrium = FALSE,
+        xlab = 'Quantity of Flights',
+        ylab = 'Price of Flights') +
+  annotate("rect", xmin = 8, xmax = 9, ymin = 5.25, ymax = 6.75, color = "lightblue", alpha = 0.2) +
+  annotate("text", x = 8.5, y = 6, label = "A", size = 2, color = "black", fontface = 2) +
+  annotate("rect", xmin = 3.5, xmax = 4.5, ymin = 4.75, ymax = 6.25, color = "lightblue", alpha = 0.2) +
+  annotate("text", x = 4, y = 5.5, size = 2, color = "black", label = "B", fontface = 2)
+```
+
+## Sources and Notes
+
+https://www.marketwatch.com/story/there-are-4-flights-in-china-but-dont-expect-many-other-coronavirus-airfare-deals-2020-02-29
+
+José Carlos Soage González and Andrew Heiss (2020). econocharts: Microeconomics and Macroeconomics Charts Made with 'ggplot2'. R package version 1.0.
+  https://r-coder.com/, https://r-coder.com/economics-charts-r/
+  
+Please Note: The numbers on the supply and demand charts are not reflective of any real world values and simply come down to a limitation in the software package which is still under production.  

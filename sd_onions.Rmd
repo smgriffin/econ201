@@ -7,7 +7,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 library(econocharts)
 library(rvest)
 library(dplyr)
@@ -25,12 +25,12 @@ The highest rainfall in 25 years significantly effected the agriculture sector o
 
 ## Opening Assumptions
 
-Despite India being an extremely large, complex and dynamic economy, the assumption will be taken that prior to the excessive rainfall in 2019, the onion market was resting at equillibrium.
+Despite India being an extremely large, complex and dynamic economy, the assumption will be taken that prior to the excessive rainfall in 2019, the onion market was resting at equilibrium.
 
 ```{r, results = 'hide'}
 sdcurve(xlab = 'Quantity of Onions',
         ylab = 'Price of Onions',
-        main = 'Supply and Demand Curve of Onion     Market',
+        main = 'Supply and Demand Curve of Onion Market',
         sub = 'Prior to June 2019',
         equilibrium = TRUE)
 ```
@@ -41,10 +41,10 @@ While the monsoon season is typically a huge boon to India's agriculture sector.
 
 ## Did this cause the demand curve to shift?
 
-Onions, being a key ingredient in many of the local cuisines would not see a shift in demand due to changing preferences.  Nor would there be substitutes which were not also greatly affected by the monsoons themselves.  With regards to income, agriculture makes up 14% of India's economy, and there was unquestionably a ripple effect throughout other sectors of the economy. But given the onion's status as a consumer staple good, and lack of additional data, it is safer to assume that the income effects were not large enough to shift demand across the entire economy.  The sheer magnitude of the heavy rains caught both consumers and government off guard, because of the suddenness of the shortage it was not possible for the consumers to anticipate the rising prices and shift demand accordingly.  
+Onions, being a key ingredient in many of the local cuisines would not see a shift in demand due to changing preferences.  Nor would there be substitutes which were not also greatly affected by the monsoons themselves.  With regards to income, agriculture makes up 14% of India's economy, and there was unquestionably a ripple effect throughout other sectors of the economy. But given the onion's status as a consumer staple good, and lack of additional data, it is safer to assume that the income effects were not large enough to shift demand across the entire economy.  The sheer magnitude of the heavy rains caught both consumers and government off guard, because of the suddenness of the decrease in quantity supplied it was not possible for the consumers to anticipate the rising prices and shift demand accordingly.  As a result, while there was no shift in demand, the rising prices would ultimate cause the quantity demanded to decrease.
 
 ```{r, results = 'hide'}
-demand(x = 4,
+demand(x = c(6, 4),
        geom = 'text',
        geomcol = 'NA',
        main = 'Demand Curve of Onions',
@@ -57,11 +57,11 @@ demand(x = 4,
 
 ## How was the supply curve shifted?
 
-While the monsoons had a rippling effect across vast amounts of the Indian economy, including into the manufacturing sector.  If these effects were to cause an increase in the prices of agriculture factors of production, they would be felt the following season.  Additionally, due to the sudden nature of the monsoons technology and seller expectations would also remain unchanged. And it would have been impossible to be so prescient as to seek returns from alternative activities.  However, undoubtedly the monsoons effected agricultural production and, as a result, the supply of onions caused the supply curve of the onion market to shift to the left.
+While the monsoons had a rippling effect across vast amounts of the Indian economy, including into the manufacturing sector.  If these effects were to cause an increase in the prices of agriculture factors of production, they would be felt the following season.  Additionally, due to the sudden nature of the monsoons technology and seller expectations would also remain unchanged. It would have been impossible to be so prescient as to seek returns from alternative activities.  However, undoubtedly the monsoons (natural events) effected agricultural production and, as a result, the supply of onions caused the supply curve of the onion market to shift to the left.
 
 ```{r, results = 'hide'}
 supply(ncurves = 2,
-       x = 4,
+       #x = 4,
        #geomcol = '',
        type = 'convex',
        main = 'Supply Curve of Onions',
@@ -71,12 +71,12 @@ supply(ncurves = 2,
        names = c("S[1]", 'S[0]')
        )
 ```
-As a reaction to this shift in supply, the Indian government reacted by banning the export of onions in order to increase the number of sellers in the domestic market and shift the supply curve back to the right.  
+As a reaction to this shift in supply, the Indian government reacted by banning the export of onions in order to increase the number of sellers in the domestic market and shift the supply curve back to the right.  Already exporters would have been flocking to the domestic market to increase the quantity supplied and reap the hire prices brought about by the decrease in quantity supplied.
 
 ```{r, results = 'hide'}
 supply(ncurves = 2,
        type = 'convex',
-       x = 4,
+       #x = 4,
        #geomcol = "NA",
        main = 'Supply Curve of Onions',
        sub = 'Shift from Export Ban 2019',
@@ -104,13 +104,16 @@ demand <- data.frame(x = c(5:10), y = c(16, 11, 8, 5, 4, 3))
 sdcurve(supply1, supply2, supply3, demand,
         main = 'Combined Supply and Demand',
         sub = 'of Indian Onion Shortage',
-        curve_names = TRUE,
+        curve_names = FALSE,
         equilibrium = FALSE,
         xlab = 'Quantity of Onions',
         ylab = 'Price of Onions',
         names = c('S[0]', 'S[1]','S[2]', 'D[0]')) +
   annotate("segment", x = 9, xend = 5, y = 11, yend = 11, arrow = arrow(length = unit(0.3, "lines")), colour = "grey50") +
-  annotate("segment", x = 3, xend = 5, y = 5, yend = 5, arrow = arrow(length = unit(0.3, "lines")), colour = "grey50")
+  annotate("segment", x = 3, xend = 5, y = 5, yend = 5, arrow = arrow(length = unit(0.3, "lines")), colour = "grey50") +
+  annotate('text', x = 2.5, y = 9, size = 2, label = 'Final\nEquilibrium Price') +
+  annotate("segment", x = 3.5, xend = 6, y = 9.45, yend = 9.45, arrow = arrow(length = unit(0.3, "lines")), colour = "grey50") 
+  
 ```
 
 ```{r, results = 'hide'}
@@ -149,4 +152,17 @@ ggplot(rbind(df1, df2, df3),
 
 ## Conclusion
 
-With the benefit of hindsight it can be seen that in spite of a number of different measures taken by the Indian government.  They failed, or were unable, to take significant enough action to counteract the great shift in the supply curve due to the unusual monsoon season. This resulted in a shortage which continued through at least December.  The prices continued to rise dramatically into the end of the year, which would greatly reduce the quantity demanded and cause the indian people to seek suitable substitutions.
+With the benefit of hindsight it can be seen that in spite of a number of different measures taken by the Indian government.  They failed, or were unable, to take significant enough action to counteract the great shift in the supply curve due to the unusual monsoon season, or temper the steady demand for onions. The quantity demanded at lower price levels remained high resulting in a shortage which continued through at least December.  The prices continued to rise dramatically into the end of the year, which would greatly reduce the quantity demanded and cause the Indian people to seek suitable substitutions at the old price levels.
+
+## Sources and Notes
+https://www.cnbc.com/2019/10/02/india-economy-modi-government-bans-onion-exports-after-prices-soar.html
+
+https://www.air-worldwide.com/siteassets/Publications/White-Papers/documents/2019_indian_monsoon_floods_whitepaper.pdf
+
+https://www.statista.com/statistics/1039704/india-production-volume-of-onions/)
+
+https://pib.gov.in/PressReleasePage.aspx?PRID=1595294
+osé Carlos Soage González and Andrew Heiss (2020). econocharts: Microeconomics and Macroeconomics Charts Made with 'ggplot2'. R package version 1.0.
+  https://r-coder.com/, https://r-coder.com/economics-charts-r/.
+  
+Please Note: The numbers on the supply and demand charts are not reflective of any real world values and simply come down to a limitation in the software package which is still under production. 
