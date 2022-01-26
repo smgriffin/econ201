@@ -7,11 +7,13 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library(econocharts)
 library(rvest)
 library(dplyr)
 library(janitor)
+library(lubridate)
+library(zoo)
 library(ggplot2)
 library(tidyr)
 
@@ -19,13 +21,13 @@ url <- 'https://pib.gov.in/PressReleasePage.aspx?PRID=1595294'
 ```
 
 ## Abstract
-
+The highest rainfall in 25 years significantly effected the agriculture sector of India in 2019.  Despite continued efforts culminated by an complete ban on exports, the Indian government was unable to prevent shortages.  As a staple ingredient of many local cuisines, the demand for onions remained high.  As a result, prices for onions remained elevated into the new year.
 
 ## Opening Assumptions
 
 Despite India being an extremely large, complex and dynamic economy, the assumption will be taken that prior to the excessive rainfall in 2019, the onion market was resting at equillibrium.
 
-```{r}
+```{r, results = 'hide'}
 sdcurve(xlab = 'Quantity of Onions',
         ylab = 'Price of Onions',
         main = 'Supply and Demand Curve of Onion     Market',
@@ -37,11 +39,11 @@ sdcurve(xlab = 'Quantity of Onions',
 
 While the monsoon season is typically a huge boon to India's agriculture sector.  The season (usually lasting between June and September) in 2019 caused a series of floods across multiple areas.  In addition to excess rainfall in all three months of the monsoon season, the heavy rains resulting in failures of dams and ineffecient reservoir operations (https://www.air-worldwide.com/siteassets/Publications/White-Papers/documents/2019_indian_monsoon_floods_whitepaper.pdf).
 
-## Does this cause the demand curve to shift?
+## Did this cause the demand curve to shift?
 
 Onions, being a key ingredient in many of the local cuisines would not see a shift in demand due to changing preferences.  Nor would there be substitutes which were not also greatly affected by the monsoons themselves.  With regards to income, agriculture makes up 14% of India's economy, and there was unquestionably a ripple effect throughout other sectors of the economy. But given the onion's status as a consumer staple good, and lack of additional data, it is safer to assume that the income effects were not large enough to shift demand across the entire economy.  The sheer magnitude of the heavy rains caught both consumers and government off guard, because of the suddenness of the shortage it was not possible for the consumers to anticipate the rising prices and shift demand accordingly.  
 
-```{r}
+```{r, results = 'hide'}
 demand(x = 4,
        geom = 'text',
        geomcol = 'NA',
@@ -50,13 +52,14 @@ demand(x = 4,
        xlab = 'Quantity of Onions',
        ylab = 'Price of Onions'
        )
+
 ```
 
 ## How was the supply curve shifted?
 
 While the monsoons had a rippling effect across vast amounts of the Indian economy, including into the manufacturing sector.  If these effects were to cause an increase in the prices of agriculture factors of production, they would be felt the following season.  Additionally, due to the sudden nature of the monsoons technology and seller expectations would also remain unchanged. And it would have been impossible to be so prescient as to seek returns from alternative activities.  However, undoubtedly the monsoons effected agricultural production and, as a result, the supply of onions caused the supply curve of the onion market to shift to the left.
 
-```{r}
+```{r, results = 'hide'}
 supply(ncurves = 2,
        x = 4,
        #geomcol = '',
@@ -70,7 +73,7 @@ supply(ncurves = 2,
 ```
 As a reaction to this shift in supply, the Indian government reacted by banning the export of onions in order to increase the number of sellers in the domestic market and shift the supply curve back to the right.  
 
-```{r}
+```{r, results = 'hide'}
 supply(ncurves = 2,
        type = 'convex',
        x = 4,
@@ -83,25 +86,67 @@ supply(ncurves = 2,
        )
 ```
 
-This is following their previous actions in which they released supplies from its national buffer stocks (which would shift the supply curve to the right as the government acts as an additional seller), set a price floor on exports to reduce the quantity demanded from abroad and removed an export subsidy hoping to shift the domestic supply curve further to the right.
-
-In spite of all these actions previously undertaken, both the demand for onions remained high.  While the the rising prices reduced the quantity demanded, it was not for lack of need or want on the part of the Indian people.  This is why it was a crucial moment for government to take action.
+This was following their previous action, where they released supplies from their national buffer stocks (which would shift the supply curve to the right as the government acted as an additional seller), set a price floor on exports to reduce the quantity demanded from abroad and removed an export subsidy hoping to shift the domestic supply curve further to the right.  However, despite all of these attempts to shift the supply curve, it was still necessary to take further action by banning exports.
 
 ## Was it enough?
 
-Following the ban of exports questions arose whether this action would be enough to shift the supply curve far enough right to counteract the extreme shift caused by the monsoon.  While India is one of the largest exporters of onions globally selling 2.2 billion kilograms globally, it's an order of magnitude smaller than their domestic consumption, which is around 20 billion kg. (https://www.statista.com/statistics/1039704/india-production-volume-of-onions/).
+Throughout all the chaos, the demand for onions remained consistent.  While the the rising prices reduced the quantity demanded, it was not for lack of need or want on the part of the Indian people.  This was why it was a crucial moment for government to take action.
 
-With the benefit of hindsight it can be seen that in spite of a number of different measures taken by the Indian government.  They failed or were unable to take significant enough action to counteract the great shift in the supply curve due to the unusual monsoon season.
+Following the ban of exports, questions arose whether this action was enough to shift the supply curve far enough to the right in order to counteract the extreme shift caused by the monsoon.  While India is one of the largest exporters of onions globally selling 2.2 billion kilograms globally, it's an order of magnitude smaller than their domestic consumption, which is around 20 billion kg. (https://www.statista.com/statistics/1039704/india-production-volume-of-onions/).
 
-```{r}
-data <- read_html(url)
+```{r, results = 'hide'}
+supply1 <- data.frame(x = c(5:10), y = c(3, 4, 5, 8, 11, 16))
+supply2 <- data.frame(x = c(1:6), y = c(3, 4, 5, 8, 11, 16))
+supply3 <- data.frame(x = c(3:8), y = c(3, 4, 5, 8, 11, 16))
+demand <- data.frame(x = c(5:10), y = c(16, 11, 8, 5, 4, 3))
+
+
+sdcurve(supply1, supply2, supply3, demand,
+        main = 'Combined Supply and Demand',
+        sub = 'of Indian Onion Shortage',
+        curve_names = TRUE,
+        equilibrium = FALSE,
+        xlab = 'Quantity of Onions',
+        ylab = 'Price of Onions',
+        names = c('S[0]', 'S[1]','S[2]', 'D[0]')) +
+  annotate("segment", x = 9, xend = 5, y = 11, yend = 11, arrow = arrow(length = unit(0.3, "lines")), colour = "grey50") +
+  annotate("segment", x = 3, xend = 5, y = 5, yend = 5, arrow = arrow(length = unit(0.3, "lines")), colour = "grey50")
+```
+
+```{r, results = 'hide'}
+data <- read_html(url, stringsAsFactors =FALSE)
 df <- data %>% 
       html_element("table") %>% 
       html_table() %>%
       row_to_names(row_number = 1) %>%
       head(12)
 
-df <-  pivot_longer(df, cols = '2017':'2019',      
+df1 <- data.frame(date = seq(as.Date("2017-01-15"), as.Date("2017-12-15"), "1 month"), price = df[, 2])
+df1$date = as.yearmon(df1$date)
+names(df1)[2] <- "price"
+df2 <- data.frame(date = seq(as.Date("2018-01-15"), as.Date("2018-12-15"), "1 month"), value = df[, 3])
+df2$date = as.yearmon(df2$date)
+names(df2)[2] <- "price"
+df3 <- data.frame(date = seq(as.Date("2019-01-15"), as.Date("2019-12-15"), "1 month"), value = df[, 4])
+df3$date = as.yearmon(df3$date)
+names(df3)[2] <- "price"
+df3[12,2] = 82.17
 
+ggplot(rbind(df1, df2, df3), 
+       aes(month(date, label=TRUE, abbr=TRUE), 
+            as.numeric(price), 
+           group=factor(year(date)),  
+           colour=factor(year(date)))) +
+  geom_line() +
+  geom_point() +
+  labs(x="Month", colour="Year") +
+  ylim(0,100) +
+  labs(title = 'Price of Onions in India',
+       subtitle = 'Source: Ministry of Consumer Affairs',
+       y = 'Price in Rupee') +
+  theme_classic()
 ```
 
+## Conclusion
+
+With the benefit of hindsight it can be seen that in spite of a number of different measures taken by the Indian government.  They failed, or were unable, to take significant enough action to counteract the great shift in the supply curve due to the unusual monsoon season. This resulted in a shortage which continued through at least December.  The prices continued to rise dramatically into the end of the year, which would greatly reduce the quantity demanded and cause the indian people to seek suitable substitutions.
